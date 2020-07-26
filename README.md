@@ -1,14 +1,14 @@
 # git_basic-operation
 **Git基本操作**
-- [拉取代码及代码推送](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#一、拉取代码及代码推送)
-- [分支操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#二、分支操作)
-  
-  ------------------------------
-  
-  
-# Git基本操作
+- [一、拉取代码及代码推送](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#一拉取代码及代码推送)
+- [二、分支操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#二分支操作)
 
-## 一、拉取代码及代码推送
+------------------------------
+    
+  
+## Git基本操作
+
+### 一、拉取代码及代码推送
 
 - 拉取远程仓库代码
 
@@ -50,7 +50,7 @@
 
   ​	
 
-## 二、分支操作
+### 二、分支操作
 
 - **本地分支操作**
 
