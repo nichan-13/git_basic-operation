@@ -1,9 +1,11 @@
 # git_basic-operation
-git指令的基本操作笔记
-
+**Git基本操作**
+- [拉取代码及代码推送](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#拉取代码及代码推送)
+- [分支操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#分支操作)
+  
 ### Git基本操作
 
-####  - 拉取代码及代码推送
+#### 拉取代码及代码推送
 
 - 拉取远程仓库代码
 
@@ -45,7 +47,7 @@ git指令的基本操作笔记
 
   ​	
 
-####  - 分支操作
+#### 分支操作
 
 - **本地分支操作**
 
