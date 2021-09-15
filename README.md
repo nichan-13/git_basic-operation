@@ -3,7 +3,8 @@
 - [一、拉取代码及代码推送](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#一拉取代码及代码推送)
 - [二、分支操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#二分支操作)
 - [三、修改已提交的commit注释](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#三修改已提交的commit注释)
-
+- [四、解决冲突](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#四解决冲突)
+  
 ------------------------------
 
 
@@ -255,5 +256,60 @@
        ```
        $ git push -f
        ```
+      
+      ​	
+
+### 四、解决冲突
+> 多人开发时 `git pull` 拉代码显示代码有冲突无法操作
+> error: Your local changes to 'c/environ.c' would be overwritten by merge.  Aborting.Please, commit your changes or stash them before you can merge.
+
+1. 暂存当前本地代码
+    ```
+    $ git stash
+   
+    ### 查看暂存列表
+    $ git stash list
+    
+    ### 暂存添加注释
+    $ git stash save "XXX"
+    
+    ### 将当前暂存弹出，并应用到当前分支对应的工作目录上
+    $ git stash pop
+   
+    ### 删除指定暂存
+    $ git stash drop + 名称
+   
+    ### 清除所有暂存
+    $ git stash clear
+    
+    ### 查看最新暂存和当前目录的差异
+    $ git stash show
+    
+    ### 查看指定暂存和当前目录的差异
+    $ git stash show stash@{1}
+    ### 查看详细的不同
+    $ git stash show -p
+    ```
+   
+2. 拉取代码
+    ```
+    $ git pull
+    ```
+    
+3. 还原暂存内容
+    ```
+    ### 还原暂存并从暂存列表删除暂存
+    $ git stash pop stash@{id}
+    ### 还原暂存不从列表删除暂存
+    $ git stash apply stash@{id}
+    ```
+    > 系统提示如下类似的信息：
+    > Auto-merging c/environ.c
+    > CONFLICT (content): Merge conflict in c/environ.c
+    > 意思就是系统自动合并修改的内容，但是其中有冲突，需要解决其中的冲突。
+    
+4. 与本地代码比较，手动解决冲突，完成这一步即可正常提交代码
+   - `Updated upstream` 和 ===== 之间的内容就是pull下来的内容
+   - ==== 和 `stashed changes` 之间的内容就是本地修改的内容
 
        
