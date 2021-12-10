@@ -1,10 +1,21 @@
 # git_basic-operation
-**Git基本操作**
+[**Git概述**](https://github.com/nichan-13/git_basic-operation#git%E6%A6%82%E8%BF%B0)
 
-- [一、拉取代码及代码推送](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#一常用操作)
+- [一、Git简介](https://github.com/nichan-13/git_basic-operation#%E4%B8%80git%E7%AE%80%E4%BB%8B)
+- [二、Git代码托管](https://github.com/nichan-13/git_basic-operation#%E4%BA%8Cgit%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1)
+- [三、Git工作流程](https://github.com/nichan-13/git_basic-operation#%E4%B8%89git%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B)
+
+[**Git基本操作**](https://github.com/nichan-13/git_basic-operation#git%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C)
+
+- [一、常用操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#一常用操作)
 - [二、分支操作](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#二分支操作)
 - [三、解决冲突](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#三解决冲突)
 - [四、修改已提交的commit注释](https://github.com/nichan-13/git_basic-operation/blob/master/README.md#四修改已提交的commit注释)
+
+[**Git commit 规范**](https://github.com/nichan-13/git_basic-operation#git-commit-%E8%A7%84%E8%8C%83)
+
+[**参考文档**](https://github.com/nichan-13/git_basic-operation#参考文档)
+
 ------------------------------
 
 ## Git概述
@@ -57,7 +68,7 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
 
 - 创建本地库
 
-  本地库(**Repository)**是一个目录，这个目录里面的所有文件都可以被Git管理起来，Git跟踪目录中每个文件的修改和删除，以便在将来某个时刻可以“还原”。
+  本地库(**Repository**)是一个目录，这个目录里面的所有文件都可以被Git管理起来，Git跟踪目录中每个文件的修改和删除，以便在将来某个时刻可以“还原”。
 
   ```
   # 在当前目录新建一个Git代码库
@@ -73,8 +84,10 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
 
   使用 **git clone** 从现有 Git 仓库中拷贝代码到本地库，在本地库创建完成之后，就可以使用 Git 命令来对本地库进行修改和管理分支
 
+  > git基于多种传输协议，其中最常用的就是https和ssh。都是为了数据传输安全，设置ssh密钥的目的是为了节省输入用户名密码的过程，同时保证传输安全。并不是必须设置。
+
   ```
-  $ git clone https://github.com/xxxx/xxxx.git
+  $ git clone [url]
   ```
 
   
@@ -88,17 +101,32 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
   $ git add .  /  git add -A
   
   # 添加指定文件
-  $ git add file1 file2
+  $ git add [file1] [file2]
   
   # 取消文件暂存
-  $ git reset file
+  $ git reset [file]
   ```
 
-  ​		  
+  ​		
+
+- 删除文件
+
+    ```
+    # 删除工作区文件，并且将这次删除放入暂存区
+    $ git rm [file1] [file2] ...
+    
+    # 停止追踪指定文件，但该文件会保留在工作区
+    $ git rm --cached [file]
+    
+    # 改名文件，并且将这个改名放入暂存区
+    $ git mv [file-original] [file-renamed]
+    ```
+
+    ​	
 
 - 将暂存区的文件修改提交到本地仓库
 
-  提交内容到本地仓库，使用 -m 为该次提交添加注释
+  提交内容到本地仓库，使用 -m 为该次提交添加说明
 
   > Git 每次提交代码，都要写 Commit message（提交说明），否则就不允许提交。一般来说，commit message 应该清晰明了，说明本次提交的目的。
 
@@ -108,23 +136,25 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
 
   ​	  
 
+- 本地仓库关联远程仓库
+
+  首次提交必须关联远程仓库后才能提交成功
+
+  ```
+  $ git remote add origin [url]
+  ```
+
+  ​		 
+
 - 推送代码至远程仓库
 
-  ```
-  $ git push
-  ```
-
-  
-
-- 本地分支关联远程分支
-
-  首次提交时未关联远程分支 git push 会推送失败，本地分支必须关联远程分支后才能提交
+  > `-u ` 会把本地的 master 分支和远程的 master 分支关联起来，在以后的推送或者拉取时就可以简化命令
 
   ```
-  $ git branch --set-upstream-to origin/master master
+  $ git push -u origin master
   ```
 
-    
+  ​		 
 
 - 拉取远程仓库最新代码至本地仓库
 
@@ -142,127 +172,74 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
 
 ​	
 
+- 查看文件修改后的差异
+
+  ```
+  $ git diff [files]
+  ```
+
+  ​	
+
 ### 二、分支操作
 
 几乎所有的版本控制系统都以某种形式支持分支。 使用分支意味着可以把自己的工作从开发主线上分离开来，以免影响开发主线。Git 的 master 分支并不是一个特殊分支， 它跟其它分支没有区别。
 
-- **本地分支操作**
+master 主分支应该非常稳定，用来发布新版本，一般情况下不允许在上面工作，工作一般情况下在新建的 dev 分支上工作，dev 分支代码稳定后可以合并到主分支 master 上来。
 
-  - 查看本地分支
+- 查看分支
 
-    ```
-    $ git branch
-    ```
-
-  - 本地仓库新建分支,切换分支 / 新建并切换至新分支
-
-    ```
-    # 新建 test 分支
-    $ git branch test         
-    
-    # 从主分支切换至 test 分支
-    $ git checkout test 
-    
-    # 创建 test 分支并切换至 test 分支
-    $ git checkout -b test
-    ```
-    
-    - 此时可向 `test` 分支添加文件并提交
-
-      ```
-      $ git add .
-      $ git commit -m "test"
-      ```
-    
-      ​	
-    
-    - 将本地分支推送至远程仓库（远程仓库不存在该分支）
-    
-      ```
-      $ git push --set-upstream origin test
-      ```
-    
-    - 将 `test` 分支与主分支 `master` 合并
-
-      ```
-      # 切换至主分支
-      $ git checkout master   
-      
-      # 内容合并至主分支
-      $ git merge test 
-      ```
-    
-    - 删除分支 / 强制删除分支
-    
-      ```
-      $ git branch -d test    /    $ git branch -D test
-      ```
-    
-    - 此时可向远程仓库推送代码
-    
-      ```
-      $ git push
-      ```
-    
-    - 删除远程分支
-    
-      ```
-      $ git push origin --delete test
-      ```
-    
-      ​	
-
-- **远程分支与本地分支操作**
-
-  - 查看分支
-
-    ```
-    # 查看所有远程分支
-    $ git branch -r  
-    
-    # 查看所有远程和本地分支
-    $ git branch -a
-    ```
+  ```
+  # 查看所有本地分支
+  $ git branch
   
-  - 拉取远程分支并创建本地分支（本地分支名称可与远程分支名称不一致）
+  # 查看所有远程分支
+  $ git branch -r  
   
-    - 方法一
+  # 查看所有远程和本地分支
+  $ git branch -a
+  ```
+
+  ​		
+
+- 本地仓库新建分支及切换分支
+
+  ```
+  # 新建分支
+  $ git branch [branch-name]         
   
-      在本地新建分支 `dev` 并切换至改本地分支 `dev` 
-      
-      采用此种方法建立的本地分支会和远程分支建立映射关系
-      
-      ```
-      $ git checkout -b 本地分支名 origin/远程分支名
-      ```
+  # 从主分支切换至指定分支
+  $ git checkout [branch-name] 
   
-    - 方法二
-  
-      在本地新建分支 `dev` ，但是不会切换至该本地分支，需手动checkout
-  
-      采用此种方法建立的本地分支不会和远程分支建立映射关系
-  
-      ```
-      $ git fetch origin 远程分支名:本地分支名
-      ```
-    
-  - 此时可向 `dev` 分支添加文件并提交
-    
+  # 创建分支并切换至该分支
+  $ git checkout -b [branch-name]	
+  ```
+
+
+
+- 拉取远程分支并创建本地分支（本地分支名称可与远程分支名称不一致）
+
+  - 方法一
+
+    在本地新建分支 `dev` 并切换至改本地分支 `dev` 
+
+    采用此种方法建立的本地分支会和远程分支建立映射关系
+
     ```
-    $ git add .
-    $ git commit -m "update dev"
+    $ git checkout -b 本地分支dev origin/远程分支dev
     ```
-    
-  - 将分支代码合并到主分支并推送
-    
+
+  - 方法二
+
+    在本地新建分支 `dev` ，但是不会切换至该本地分支，需手动checkout
+
+    采用此种方法建立的本地分支不会和远程分支建立映射关系
+
     ```
-    $ git checkout master       // 切换至主分支
-    $ git merge dev             // 将 dev 分支合并到主分支
-    $ git push origin master    // 将代码推送至远程仓库
+    $ git fetch origin 远程分支dev:本地分支dev
     ```
-    
-    ​	
-  
+
+​	
+
 - 本地分支和远程分支建立映射关系的作用
 
   建立本地分支与远程分支的映射关系（或者为跟踪关系track）
@@ -279,25 +256,61 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
       `origin` 为**git地址**的标志，可以建立当前分支与远程分支的映射关系
 
       ```
-      $ git branch -u origin/分支名
+      $ git branch -u origin/[branch-name]  /  
+      $ git branch --set-upstream-to origin/[branch-name]
       ```
-
-      ```
-      $ git branch --set-upstream-to origin/分支名
-      ```
-
+      
     - 撤销本地分支与远程分支的映射关系
-
+  
       ```
       $ git branch --unset-upstream
       ```
-
+  
       之后可以再次用 `git branch -vv` 查看本地分支和远程分支映射关系
-      
-      ​	
+  
+      ​		
+  
+- 将本地分支推送至远程仓库
+
+  ```
+  # 远程仓库不存在该分支
+  $ git push --set-upstream origin [branch-name]
+  
+  $ git push origin master
+  ```
+
+  ​		
+
+- 分支合并
+
+  ```
+  # 先切换至主分支
+  $ git checkout master   
+  
+  # 将指定分支内容合并至主分支
+  $ git merge [branch-name] 
+  ```
+
+  ​		
+
+- 删除分支
+
+  ```
+  # 删除分支 
+  $ git branch -d [branch-name]
+  
+  # 强制删除分支
+  $ git branch -D [branch-name]
+  
+  # 删除远程分支
+  $ git push origin --delete [branch-name]  /  $ git branch -dr [remote/branch]
+  ```
+
+
+​		
 
 ### 三、解决冲突
-> 多人开发时 `git pull` 拉代码显示代码有冲突无法操作
+> 多人开发时显示代码有冲突无法操作
 > error: Your local changes to 'c/environ.c' would be overwritten by merge.  Aborting.Please, commit your changes or stash them before you can merge.
 
 1. 暂存当前本地代码
@@ -346,8 +359,9 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
     > 意思就是系统自动合并修改的内容，但是其中有冲突，需要解决其中的冲突。
     
 4. 与本地代码比较，手动解决冲突，完成这一步即可正常提交代码
-   - `Updated upstream` 和 ===== 之间的内容就是pull下来的内容
-   - ==== 和 `stashed changes` 之间的内容就是本地修改的内容
+   
+   - `Updated upstream` 和 ===== 之间的内容是指主分支修改的内容
+   - ==== 和 `stashed changes` 之间的内容就是本地分支修改的内容
 
 
 
@@ -492,3 +506,9 @@ Git是分布式版本控制系统（Distributed Version Control System，简称 
   [规范提交git commitizen conventional-changelog-cli](https://www.cnblogs.com/mengfangui/p/12634845.html)
 
   
+
+## 参考文档
+
+- [Git教程](https://www.liaoxuefeng.com/wiki/896043488029600)
+
+- [常用 Git 命令清单](http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html)
